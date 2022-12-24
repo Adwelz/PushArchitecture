@@ -3,13 +3,13 @@ package com.example.chatbasicpullfx.Server;
 
 import com.example.chatbasicpullfx.Shared.Message;
 import com.example.chatbasicpullfx.Server.CustomExceptions.ConnectionException;
-import com.example.chatbasicpullfx.Server.CustomExceptions.NotFoundException;
 import com.example.chatbasicpullfx.Shared.User;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class DialogueImpl extends UnicastRemoteObject implements Dialogue{
@@ -27,13 +27,13 @@ public class DialogueImpl extends UnicastRemoteObject implements Dialogue{
     }
 
     @Override
-    public boolean connect(String pseudo) throws RemoteException {
+    public boolean connect(User user) throws RemoteException {
         AtomicBoolean state = new AtomicBoolean(false);
         try{
-            if(users.stream().allMatch(user -> user.getName() != pseudo)){
-                users.add(new User(pseudo));
+            if(users.stream().allMatch(u -> u.getName() != user.getName())){
+                users.add(user);
                 state.set(true);
-                System.out.println("User ("+ pseudo +") connection successful");
+                System.out.println("User ("+ user.getName() +") connection successful");
             }else{
                 throw new ConnectionException("Erreur de connexion");
             }
@@ -45,19 +45,14 @@ public class DialogueImpl extends UnicastRemoteObject implements Dialogue{
     }
 
     @Override
-    public void disconnect(String pseudo) throws RemoteException {
-        try{
-            if(users.contains(pseudo)){
-                users.remove(pseudo);
-            }else{
-                throw new NotFoundException("Utilisateur non reconnu !");
+    public void disconnect(User user) throws RemoteException {
+        ((ArrayList<User>)users.clone()).forEach(u -> {
+            if(Objects.equals(u.getName(), user.getName())){
+                System.out.println("User ("+ user.getName() +") disconnection successful");
+                users.remove(u);
             }
-        } catch(NotFoundException e){
-            System.out.println(e.getExceptionMsg());
-            e.printStackTrace();
-        }
+        });
     }
-
     @Override
     public void sendMessage(User from, User to, String message) throws RemoteException {
         String key = createBDDKey(from.getName(), to.getName());
@@ -79,7 +74,6 @@ public class DialogueImpl extends UnicastRemoteObject implements Dialogue{
 
     @Override
     public ArrayList<User> getClients() throws RemoteException {
-        System.out.println("serveur works");
         return users;
     }
 

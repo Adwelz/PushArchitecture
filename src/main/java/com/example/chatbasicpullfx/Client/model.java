@@ -30,10 +30,14 @@ public class model {
         dialogue.sendMessage(currentUser,adressee,msg);
     }
 
+    void disconnectUser() throws RemoteException {
+        dialogue.disconnect(currentUser);
+    }
+
     public boolean connectUser(String userName) {
         try{
-            if(dialogue.connect(userName)){
-                currentUser = new User(userName);
+            currentUser = new User(userName);
+            if(dialogue.connect(currentUser)){
                 return true;
             }
 

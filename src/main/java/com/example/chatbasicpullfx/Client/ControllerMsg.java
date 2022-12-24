@@ -58,8 +58,6 @@ public class ControllerMsg implements Initializable {
         ArrayList<User> users = model.getInstance().getUserList();
         users.forEach(user -> usersOL.add(user));
         tvContacts.setItems(usersOL);
-        System.out.println("User refresh");
-        System.out.println(tvContacts.getId());
     }
 
     public void refreshMessage() throws RemoteException {
@@ -68,6 +66,5 @@ public class ControllerMsg implements Initializable {
         Messages.forEach(msg ->{
             messageArea.getChildren().add(new Label(msg.getFrom() + " : " + msg.getMsg()));
         });
-        System.out.println("Message refresh");
     }
 }

@@ -1,6 +1,7 @@
 package com.example.chatbasicpullfx.Client;
 
 import com.example.chatbasicpullfx.Shared.User;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -25,10 +26,16 @@ public class userThread implements Runnable{
     public synchronized void run() {
         while(true){
             try {
-                this.wait(2000);
+                this.wait(200);
                 control.refreshUser();
-                control.refreshMessage();
-            } catch (InterruptedException | RemoteException  e) {
+                Platform.runLater(() ->{
+                    try {
+                        control.refreshMessage();
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }

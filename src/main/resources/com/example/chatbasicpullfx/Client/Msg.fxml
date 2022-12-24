@@ -29,7 +29,10 @@
       </VBox>
       <VBox maxWidth="1.7976931348623157E308" prefHeight="400.0">
          <children>
-            <VBox fx:id="messageArea" alignment="BOTTOM_RIGHT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefHeight="1500.0" prefWidth="538.0" />
+            <VBox fx:id="messageArea" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefHeight="1500.0" prefWidth="538.0" spacing="5.0">
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="15.0" />
+               </padding></VBox>
             <TextField fx:id="tfMsg" maxWidth="1.7976931348623157E308" prefHeight="12.0" prefWidth="1500.0" />
             <Button fx:id="sendButton" alignment="CENTER" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#sendMessage" text="Envoyer">
                <VBox.margin>
