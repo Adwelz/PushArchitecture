@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ControllerMsg implements Initializable {
     @FXML private TableView<User> tvContacts = new TableView<User>();
     @FXML private TextField tfMsg = new TextField();
     @FXML
-    protected void sendMessage() throws RemoteException {
+    protected void sendMessage() throws RemoteException, MalformedURLException {
         model.getInstance().sendMessage(tfMsg.getText());
     }
 
