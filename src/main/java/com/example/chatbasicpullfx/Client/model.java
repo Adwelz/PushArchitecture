@@ -43,7 +43,7 @@ public class model {
 
     public boolean connectUser(String userName) throws RemoteException {
         currentUser = new User(userName);
-        connection.connect(currentUser,rcv);
+        emitter=connection.connect(currentUser,rcv);
         return true;
     }
 
